@@ -12,7 +12,7 @@ func TestNewProduct(t *testing.T) {
 	assert.NotNil(t, p)
 	assert.NotEmpty(t, p.ID)
 	assert.Equal(t, "Product 1", p.Name)
-	assert.Equal(t, 100, p.Price)
+	assert.Equal(t, 100.0, p.Price)
 	
 }
 
