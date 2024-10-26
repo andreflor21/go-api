@@ -4,15 +4,27 @@ import (
 	"net/http"
 
 	"github.com/andreflor21/go-api/configs"
+	_ "github.com/andreflor21/go-api/docs"
 	"github.com/andreflor21/go-api/internal/entity"
 	"github.com/andreflor21/go-api/internal/infra/database"
 	"github.com/andreflor21/go-api/internal/infra/webserver/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/jwtauth"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+
+// @title Go API
+// @version 1
+// @description This is a sample server Go API server.
+
+// @host localhost:8000
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 
 func main(){
 	configs, err := configs.LoadConfig(".")
@@ -46,7 +58,9 @@ func main(){
 		r.Delete("/{id}", productHandler.DeleteProduct)
 	})
 	r.Post("/users", userHandler.CreateUser)
-	r.Post("/users/generate_jwt", userHandler.GetJWT)
+	r.Post("/users/generate_token", userHandler.GetJWT)
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 	http.ListenAndServe(":8000", r)
 }
 
